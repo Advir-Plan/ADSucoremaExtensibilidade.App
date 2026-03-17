@@ -675,14 +675,17 @@ namespace ADSucoremaExtensibilidade
             if (dgvOrdensFabrico.Columns[e.ColumnIndex].Name == "Artigo")
             {
                 string artigo = dgvOrdensFabrico.Rows[e.RowIndex].Cells["Artigo"].Value.ToString();
+                string ordemFabrico = dgvOrdensFabrico.Rows[e.RowIndex].Cells["OrdemFabrico"].Value?.ToString() ?? "";
                 bool existe = false;
 
                 string query = $@"SELECT COUNT(*) AS count
                        FROM CabecInternos CI
                        JOIN LinhasInternos LI ON CI.Id = LI.IdCabecInternos
-                       WHERE CI.TipoDoc = 'SOF' 
+                       WHERE CI.TipoDoc = 'SOF'
                          AND CI.IdOrdemFabrico = '{DocumentoStock.IdOrdemFabrico}'
-                         AND LI.Artigo = '{artigo}'";
+                         AND CI.IDOperadorGPR <> 0
+                         AND LI.Artigo = '{artigo}'
+                         AND LI.Lote = '{ordemFabrico}'";
 
                 StdBELista resultado = BSO.Consulta(query);
                 resultado.Inicio();
@@ -838,7 +841,7 @@ namespace ADSucoremaExtensibilidade
                                 double quantidade = double.Parse(qtFabricada);
                                 double totalValue = double.Parse(total);
                                 double precoUnitario = 0.0;
-                           
+
                                 if (!double.TryParse(qtFabricada, out double result) || !double.TryParse(total, out double result2))
                                 {
                                     MessageBox.Show("Erro ao converter os valores para números.");
