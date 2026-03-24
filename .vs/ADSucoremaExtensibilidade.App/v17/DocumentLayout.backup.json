@@ -3,11 +3,15 @@
   "WorkspaceRootPath": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\",
   "Documents": [
     {
-      "AbsoluteMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\adsucoremaextensibilidade\\editorordemfabricostocks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "AbsoluteMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|c:\\users\\jpval\\desktop\\adsucoremaextensibilidade.app\\adsucoremaextensibilidade\\editorordemfabricostocks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|solutionrelative:adsucoremaextensibilidade\\editorordemfabricostocks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|c:\\users\\jpval\\desktop\\adsucoremaextensibilidade.app\\adsucoremaextensibilidade\\editorordemfabricostocks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
+      "AbsoluteMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\adsucoremaextensibilidade\\editorordemfabricostocks.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|solutionrelative:adsucoremaextensibilidade\\editorordemfabricostocks.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\adsucoremaextensibilidade\\editorordemfabricostocks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form",
       "RelativeMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|solutionrelative:adsucoremaextensibilidade\\editorordemfabricostocks.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}|Form"
     },
     {
@@ -95,10 +99,6 @@
       "RelativeMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|solutionrelative:adsucoremaextensibilidade\\progressform.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\adsucoremaextensibilidade\\editorordemfabricostocks.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
-      "RelativeMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|solutionrelative:adsucoremaextensibilidade\\editorordemfabricostocks.designer.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
-    },
-    {
       "AbsoluteMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\adsucoremaextensibilidade\\editorvalores.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
       "RelativeMoniker": "D:0:0:{BF0ED51C-9A49-482D-85D4-4AF95F6F0931}|ADSucoremaExtensibilidade\\ADSucoremaExtensibilidade.csproj|solutionrelative:adsucoremaextensibilidade\\editorvalores.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
@@ -142,7 +142,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "EditorOrdemFabricoStocks.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\EditorOrdemFabricoStocks.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\EditorOrdemFabricoStocks.cs",
@@ -160,14 +160,14 @@
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\EditorOrdemFabricoStocks.cs",
               "ToolTip": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\EditorOrdemFabricoStocks.cs",
               "RelativeToolTip": "ADSucoremaExtensibilidade\\EditorOrdemFabricoStocks.cs",
-              "ViewState": "AgIAANkGAAAAAAAAAAAQwPkGAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAFQDAAAAAAAAAAAqwGQDAAAzAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-04T10:45:49.434Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 5,
+              "DocumentIndex": 6,
               "Title": "EntradaOFValorizadas.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\EntradaOFValorizadas.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\EntradaOFValorizadas.cs",
@@ -178,7 +178,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 3,
+              "DocumentIndex": 4,
               "Title": "EditorValores.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\EditorValores.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\EditorValores.cs",
@@ -189,7 +189,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 4,
+              "DocumentIndex": 5,
               "Title": "SelecionarArtigosEletricos.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\SelecionarArtigosEletricos.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\SelecionarArtigosEletricos.cs",
@@ -200,7 +200,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
               "Title": "EditorArtigosUnidade.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\EditorArtigosUnidade.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\EditorArtigosUnidade.cs",
@@ -211,7 +211,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 6,
+              "DocumentIndex": 7,
               "Title": "FrmProject.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\FrmProject.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\FrmProject.cs",
@@ -222,7 +222,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 7,
+              "DocumentIndex": 8,
               "Title": "Priform.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\Priform.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\Priform.cs",
@@ -233,7 +233,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 8,
+              "DocumentIndex": 9,
               "Title": "ProgressForm.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\ProgressForm.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\ProgressForm.cs",
@@ -244,7 +244,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 9,
+              "DocumentIndex": 10,
               "Title": "EditorImportarExelOF.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\EditorImportarExelOF.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\EditorImportarExelOF.cs",
@@ -255,7 +255,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 10,
+              "DocumentIndex": 11,
               "Title": "packages.config",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\packages.config",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\packages.config",
@@ -267,7 +267,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 11,
+              "DocumentIndex": 12,
               "Title": "MenuImpressao.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\Sales\\MenuImpressao.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\Sales\\MenuImpressao.cs",
@@ -278,7 +278,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 12,
+              "DocumentIndex": 13,
               "Title": "FormPreview.cs [Design]",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\Sales\\FormPreview.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\Sales\\FormPreview.cs",
@@ -289,7 +289,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 13,
+              "DocumentIndex": 14,
               "Title": "ValorizaOfProducao.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\ValorizaOfProducao.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\ValorizaOfProducao.cs",
@@ -301,7 +301,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 14,
+              "DocumentIndex": 15,
               "Title": "UiEditorProducao.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\UiEditorProducao.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\UiEditorProducao.cs",
@@ -313,7 +313,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 15,
+              "DocumentIndex": 16,
               "Title": "ValorizarOF.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\ValorizarOF.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\ValorizarOF.cs",
@@ -325,7 +325,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 16,
+              "DocumentIndex": 17,
               "Title": "TransferenciaDosArtigos008.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\TransferenciaDosArtigos008.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\TransferenciaDosArtigos008.cs",
@@ -337,7 +337,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 17,
+              "DocumentIndex": 18,
               "Title": "TransferenciasArmazem.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\TransferenciasArmazem.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\TransferenciasArmazem.cs",
@@ -349,7 +349,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 18,
+              "DocumentIndex": 19,
               "Title": "Rececao.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\Rececao.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\Rececao.cs",
@@ -361,7 +361,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 19,
+              "DocumentIndex": 20,
               "Title": "Editor.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\Editor.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\Editor.cs",
@@ -373,7 +373,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 20,
+              "DocumentIndex": 21,
               "Title": "UiEditorInternos.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\UiEditorInternos.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\UiEditorInternos.cs",
@@ -385,7 +385,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 21,
+              "DocumentIndex": 22,
               "Title": "UiOrdensFabrico.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\UiOrdensFabrico.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\UiOrdensFabrico.cs",
@@ -409,7 +409,7 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 22,
+              "DocumentIndex": 23,
               "Title": "ProgressForm.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\ProgressForm.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\ProgressForm.cs",
@@ -421,13 +421,13 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 23,
+              "DocumentIndex": 1,
               "Title": "EditorOrdemFabricoStocks.Designer.cs",
               "DocumentMoniker": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\EditorOrdemFabricoStocks.Designer.cs",
               "RelativeDocumentMoniker": "ADSucoremaExtensibilidade\\EditorOrdemFabricoStocks.Designer.cs",
               "ToolTip": "C:\\Users\\jpval\\Desktop\\ADSucoremaExtensibilidade.App\\ADSucoremaExtensibilidade\\EditorOrdemFabricoStocks.Designer.cs",
               "RelativeToolTip": "ADSucoremaExtensibilidade\\EditorOrdemFabricoStocks.Designer.cs",
-              "ViewState": "AgIAAOgAAAAAAAAAAABRwOsAAAABAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAVAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2025-09-04T14:29:59.335Z",
               "EditorCaption": ""

@@ -674,38 +674,36 @@ namespace ADSucoremaExtensibilidade
         {
             if (dgvOrdensFabrico.Columns[e.ColumnIndex].Name == "Artigo")
             {
-                string artigo = dgvOrdensFabrico.Rows[e.RowIndex].Cells["Artigo"].Value.ToString();
+                if (e.RowIndex < 0 || dgvOrdensFabrico.Rows[e.RowIndex].IsNewRow) return;
+
+                string artigo = dgvOrdensFabrico.Rows[e.RowIndex].Cells["Artigo"].Value?.ToString();
                 string ordemFabrico = dgvOrdensFabrico.Rows[e.RowIndex].Cells["OrdemFabrico"].Value?.ToString() ?? "";
-                bool existe = false;
+
+                if (string.IsNullOrEmpty(artigo)) return;
+
+                // Se não há ordemFabrico, não sombrear
+                if (string.IsNullOrEmpty(ordemFabrico))
+                {
+                    dgvOrdensFabrico.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
+                    return;
+                }
 
                 string query = $@"SELECT COUNT(*) AS count
-                       FROM CabecInternos CI
-                       JOIN LinhasInternos LI ON CI.Id = LI.IdCabecInternos
-                       WHERE CI.TipoDoc = 'SOF'
-                         AND CI.IdOrdemFabrico = '{DocumentoStock.IdOrdemFabrico}'
-                         AND CI.IDOperadorGPR <> 0
-                         AND LI.Artigo = '{artigo}'
-                         AND LI.Lote = '{ordemFabrico}'";
+               FROM CabecInternos CI WITH(NOLOCK)
+               JOIN LinhasInternos LI WITH(NOLOCK) ON CI.Id = LI.IdCabecInternos
+               WHERE CI.TipoDoc = 'SOF'
+                 AND CI.IdOrdemFabrico = '{DocumentoStock.IdOrdemFabrico}'
+                 AND CI.IDOperadorGPR <> 0
+                 AND LI.Artigo = '{artigo}'
+                 AND RTRIM(LTRIM(LI.Lote)) = RTRIM(LTRIM('{ordemFabrico}'))";
 
                 StdBELista resultado = BSO.Consulta(query);
                 resultado.Inicio();
 
-                if (resultado.DaValor<int>("count") > 0)
-                {
-                    existe = true;
-                }
-
-                if (existe)
-                {
-                    dgvOrdensFabrico.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.LightGray;
-                }
-                else
-                {
-                    dgvOrdensFabrico.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
-                }
+                bool existe = resultado.DaValor<int>("count") > 0;
+                dgvOrdensFabrico.Rows[e.RowIndex].DefaultCellStyle.BackColor = existe ? Color.LightGray : Color.White;
             }
         }
-
         private void button1_Click(object sender, System.EventArgs e)
         {
             ProgressForm progressForm = null;
@@ -760,34 +758,38 @@ namespace ADSucoremaExtensibilidade
                 progressForm.UpdateProgress(20, "Verificando artigos existentes...");
                 System.Windows.Forms.Application.DoEvents();
 
-                var artigosStr = string.Join("','", artigosSelecionados.Select(x => x.artigo));
-                var queryBatch = $@"
-                    SELECT DISTINCT LI.Artigo
-                    FROM CabecInternos CI WITH(NOLOCK)
-                    JOIN LinhasInternos LI WITH(NOLOCK) ON CI.Id = LI.IdCabecInternos
-                    JOIN GPR_OrdemFabrico GF WITH(NOLOCK) ON CI.IdOrdemFabrico = GF.IDOrdemFabrico
-                    WHERE CI.TipoDoc = 'SOF' 
-                      AND GF.CDU_CodigoProjeto = '{projeto}'
-                      AND LI.Artigo IN ('{artigosStr}')
-                      AND CI.IDOperadorGPR > 0";
+                // ⚡ CONSULTA ÚNICA EM LOTE: Verificar por Artigo + Lote (OrdemFabrico) para não bloquear o mesmo artigo de ordens diferentes
+                var condicaoPares = string.Join(" OR ", artigosSelecionados.Select(x =>
+                    $"(LI.Artigo = '{x.artigo}' AND RTRIM(LTRIM(LI.Lote)) = RTRIM(LTRIM('{x.row["OrdemFabrico"]}')))"
+                ));
 
-                // ⚡ UMA ÚNICA CONSULTA SQL para todos os artigos
+                var queryBatch = $@"
+    SELECT LI.Artigo, RTRIM(LTRIM(LI.Lote)) AS Lote
+    FROM CabecInternos CI WITH(NOLOCK)
+    JOIN LinhasInternos LI WITH(NOLOCK) ON CI.Id = LI.IdCabecInternos
+    WHERE CI.TipoDoc = 'SOF'
+      AND CI.IdOrdemFabrico = '{DocumentoStock.IdOrdemFabrico}'
+      AND CI.IDOperadorGPR > 0
+      AND ({condicaoPares})";
+
+                // ⚡ UMA ÚNICA CONSULTA SQL para todos os pares artigo+lote
                 var artigosExistentesResult = BSO.Consulta(queryBatch);
                 var artigosExistentesHashSet = new HashSet<string>();
 
                 progressForm.UpdateProgress(40, "Processando resultados da consulta...");
                 System.Windows.Forms.Application.DoEvents();
 
-                // Processar resultado uma única vez
+                // Processar resultado usando chave composta artigo|lote
                 var numExistentes = artigosExistentesResult.NumLinhas();
                 artigosExistentesResult.Inicio();
                 for (int i = 0; i < numExistentes; i++)
                 {
-                    artigosExistentesHashSet.Add(artigosExistentesResult.DaValor<string>("Artigo"));
+                    string chave = $"{artigosExistentesResult.DaValor<string>("Artigo")}|{artigosExistentesResult.DaValor<string>("Lote")}";
+                    artigosExistentesHashSet.Add(chave);
                     artigosExistentesResult.Seguinte();
                 }
 
-                // ⚡ Separar artigos para processar (sem mais SQL)
+                // ⚡ Separar artigos para processar usando chave composta
                 progressForm.UpdateProgress(60, "Separando artigos para processamento...");
                 System.Windows.Forms.Application.DoEvents();
 
@@ -796,9 +798,12 @@ namespace ADSucoremaExtensibilidade
 
                 foreach (var (artigo, familia, row) in artigosSelecionados)
                 {
-                    if (artigosExistentesHashSet.Contains(artigo))
+                    string ordemFabricoRow = row["OrdemFabrico"]?.ToString()?.Trim() ?? "";
+                    string chave = $"{artigo}|{ordemFabricoRow}";
+
+                    if (artigosExistentesHashSet.Contains(chave))
                     {
-                        artigosJaExistentes.Add(artigo);
+                        artigosJaExistentes.Add($"{artigo} (OF: {ordemFabricoRow})");
                     }
                     else
                     {
@@ -853,6 +858,7 @@ namespace ADSucoremaExtensibilidade
                                 var infoArtigo = BSO.Base.Artigos.Edita(artigo);
                                 string unidadeBase = infoArtigo.UnidadeBase;
                                 string descricao = infoArtigo.Descricao;
+                                string codiva = infoArtigo.IVA;
 
                                 IntBELinhaDocumentoInterno linha = new IntBELinhaDocumentoInterno
                                 {
@@ -863,7 +869,9 @@ namespace ADSucoremaExtensibilidade
                                     Armazem = "A1",
                                     Quantidade = quantidade,
                                     PrecoUnitario = precoUnitario,
-                                    INV_EstadoOrigem = "DISP"
+                                    INV_EstadoOrigem = "DISP",
+                                    CodigoIva = codiva
+                                    
                                 };
 
                                 documento.Linhas.Insere(linha);
