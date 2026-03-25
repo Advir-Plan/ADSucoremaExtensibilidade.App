@@ -742,13 +742,10 @@ C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\b
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\CrystalDecisions.Windows.Forms.dll
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\ErpDS100.dll
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\IGprDS100.dll
-C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\IVndBS100.dll
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\Newtonsoft.Json.dll
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\Primavera.Extensibility.POS.dll
-C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\Primavera.Extensibility.Sales.dll
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\Primavera.Platform.Collections.dll
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\PriTextBoxF4100.dll
-C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\VndBE100.dll
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\Newtonsoft.Json.xml
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\cs\CrystalDecisions.CrystalReports.Engine.resources.dll
 C:\Users\jpval\Desktop\ADSucoremaExtensibilidade.App\ADSucoremaExtensibilidade\bin\Debug\da\CrystalDecisions.CrystalReports.Engine.resources.dll

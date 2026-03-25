@@ -36,7 +36,100 @@ namespace ADSucoremaExtensibilidade
         // Cache para receções
         private Dictionary<string, bool> _cacheRececaoVFS = new Dictionary<string, bool>();
         private Dictionary<string, bool> _cacheRececaoVFA = new Dictionary<string, bool>();
+        private HashSet<string> _linhasComDadoSaida = new HashSet<string>();
+        private HashSet<string> _artigosComDadoSaidaProjeto = new HashSet<string>();
+        private string GerarChaveLinha(string artigo, string ordemFabrico)
+        {
+            string art = (artigo ?? "").Trim().ToUpper();
+            string of = (ordemFabrico ?? "").Trim().ToUpper();
+            return $"{art}|{of}";
+        }
 
+        private void CarregarArtigosComDadoSaidaProjeto()
+        {
+            _artigosComDadoSaidaProjeto.Clear();
+
+            try
+            {
+                var query = $@"
+            SELECT DISTINCT
+                LI.Artigo
+            FROM CabecInternos CI WITH(NOLOCK)
+            INNER JOIN LinhasInternos LI WITH(NOLOCK)
+                ON CI.Id = LI.IdCabecInternos
+            INNER JOIN GPR_OrdemFabrico GF WITH(NOLOCK)
+                ON CI.IdOrdemFabrico = GF.IDOrdemFabrico
+            WHERE CI.TipoDoc = 'SOF'
+              AND CI.IDOperadorGPR > 0
+              AND GF.CDU_CodigoProjeto = '{projeto}'
+              AND LI.Artigo IS NOT NULL";
+
+                var result = BSO.Consulta(query);
+
+                int num = result.NumLinhas();
+                if (num <= 0)
+                    return;
+
+                result.Inicio();
+                for (int i = 0; i < num; i++)
+                {
+                    string artigo = result.DaValor<string>("Artigo") ?? "";
+                    artigo = artigo.Trim().ToUpper();
+
+                    if (!string.IsNullOrEmpty(artigo))
+                        _artigosComDadoSaidaProjeto.Add(artigo);
+
+                    result.Seguinte();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Erro ao carregar artigos com dado saída no projeto: {ex.Message}");
+            }
+        }
+
+        private void CarregarLinhasComDadoSaida()
+        {
+            _linhasComDadoSaida.Clear();
+
+            try
+            {
+                var query = $@"
+            SELECT DISTINCT
+                LI.Artigo,
+                RTRIM(LTRIM(LI.Lote)) AS Lote
+            FROM CabecInternos CI WITH(NOLOCK)
+            INNER JOIN LinhasInternos LI WITH(NOLOCK) 
+                ON CI.Id = LI.IdCabecInternos
+            INNER JOIN GPR_OrdemFabrico GF WITH(NOLOCK)
+                ON CI.IdOrdemFabrico = GF.IDOrdemFabrico
+            WHERE CI.TipoDoc = 'SOF'
+              AND CI.IDOperadorGPR > 0
+              AND GF.CDU_CodigoProjeto = '{projeto}'
+              AND LI.Artigo IS NOT NULL
+              AND LI.Lote IS NOT NULL";
+
+                var result = BSO.Consulta(query);
+
+                int num = result.NumLinhas();
+                if (num <= 0)
+                    return;
+
+                result.Inicio();
+                for (int i = 0; i < num; i++)
+                {
+                    string artigo = result.DaValor<string>("Artigo") ?? "";
+                    string lote = result.DaValor<string>("Lote") ?? "";
+
+                    _linhasComDadoSaida.Add(GerarChaveLinha(artigo, lote));
+                    result.Seguinte();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Erro ao carregar linhas com dado saída: {ex.Message}");
+            }
+        }
         public EditorOrdemFabricoStocks(ErpBS100.ErpBS bSO, StdPlatBS100.StdBSInterfPub pSO, IntBE100.IntBEDocumentoInterno documentoStock)
         {
             InitializeComponent();
@@ -128,6 +221,7 @@ namespace ADSucoremaExtensibilidade
             if (string.IsNullOrEmpty(projeto))
             {
                 _dadosCompletos = CriarDataTableVazio();
+                _linhasComDadoSaida.Clear();
                 AplicarPaginacao();
                 return;
             }
@@ -167,11 +261,14 @@ namespace ADSucoremaExtensibilidade
                     break;
             }
 
+            // Carregar controlo visual do cinzento
+            CarregarLinhasComDadoSaida();
+            CarregarArtigosComDadoSaidaProjeto();
+
             // Resetar para primeira página e aplicar paginação
             _paginaAtual = 1;
             AplicarPaginacao();
         }
-
         private void CarregarArtigosSubcontratadosCompleto()
         {
             System.Diagnostics.Debug.WriteLine($"=== CARREGANDO ARTIGOS SUBCONTRATADOS PARA PROJETO: {projeto} ===");
@@ -670,40 +767,35 @@ namespace ADSucoremaExtensibilidade
             return cacheFamilias[codigoFamilia];
         }
 
+
         private void dataGridView1_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dgvOrdensFabrico.Columns[e.ColumnIndex].Name == "Artigo")
+            if (e.RowIndex < 0 || dgvOrdensFabrico.Rows[e.RowIndex].IsNewRow)
+                return;
+
+            var row = dgvOrdensFabrico.Rows[e.RowIndex];
+
+            string artigo = row.Cells["Artigo"].Value?.ToString() ?? "";
+            string ordemFabrico = row.Cells["OrdemFabrico"].Value?.ToString() ?? "";
+
+            bool pintarCinza = false;
+
+            // Artigos Subcontratados -> validar por Artigo + OrdemFabrico
+            if (cbTipoLista.SelectedIndex == 0)
             {
-                if (e.RowIndex < 0 || dgvOrdensFabrico.Rows[e.RowIndex].IsNewRow) return;
-
-                string artigo = dgvOrdensFabrico.Rows[e.RowIndex].Cells["Artigo"].Value?.ToString();
-                string ordemFabrico = dgvOrdensFabrico.Rows[e.RowIndex].Cells["OrdemFabrico"].Value?.ToString() ?? "";
-
-                if (string.IsNullOrEmpty(artigo)) return;
-
-                // Se não há ordemFabrico, não sombrear
-                if (string.IsNullOrEmpty(ordemFabrico))
-                {
-                    dgvOrdensFabrico.Rows[e.RowIndex].DefaultCellStyle.BackColor = Color.White;
-                    return;
-                }
-
-                string query = $@"SELECT COUNT(*) AS count
-               FROM CabecInternos CI WITH(NOLOCK)
-               JOIN LinhasInternos LI WITH(NOLOCK) ON CI.Id = LI.IdCabecInternos
-               WHERE CI.TipoDoc = 'SOF'
-                 AND CI.IdOrdemFabrico = '{DocumentoStock.IdOrdemFabrico}'
-                 AND CI.IDOperadorGPR <> 0
-                 AND LI.Artigo = '{artigo}'
-                 AND RTRIM(LTRIM(LI.Lote)) = RTRIM(LTRIM('{ordemFabrico}'))";
-
-                StdBELista resultado = BSO.Consulta(query);
-                resultado.Inicio();
-
-                bool existe = resultado.DaValor<int>("count") > 0;
-                dgvOrdensFabrico.Rows[e.RowIndex].DefaultCellStyle.BackColor = existe ? Color.LightGray : Color.White;
+                string chave = GerarChaveLinha(artigo, ordemFabrico);
+                pintarCinza = _linhasComDadoSaida.Contains(chave);
             }
+            else
+            {
+                // Restantes listas -> validar por artigo dentro do projeto
+                string artigoNormalizado = (artigo ?? "").Trim().ToUpper();
+                pintarCinza = _artigosComDadoSaidaProjeto.Contains(artigoNormalizado);
+            }
+
+            row.DefaultCellStyle.BackColor = pintarCinza ? Color.LightGray : Color.White;
         }
+
         private void button1_Click(object sender, System.EventArgs e)
         {
             ProgressForm progressForm = null;
@@ -1201,74 +1293,73 @@ namespace ADSucoremaExtensibilidade
             var num = artigosEletricos.NumLinhas();
             if (num == 0) return dt;
 
-            // Coletar todos os artigos para consulta em lote
+            // Coletar todos os artigos únicos para consulta em lote
             var todosArtigos = new List<string>();
             artigosEletricos.Inicio();
             for (int i = 0; i < num; i++)
             {
-                todosArtigos.Add(artigosEletricos.DaValor<string>("Artigo"));
+                string artigo = artigosEletricos.DaValor<string>("Artigo");
+                if (!string.IsNullOrEmpty(artigo) && !todosArtigos.Contains(artigo))
+                {
+                    todosArtigos.Add(artigo);
+                }
                 artigosEletricos.Seguinte();
             }
 
-            // Consulta otimizada em lote para artigos, famílias e receções
+            if (todosArtigos.Count == 0)
+                return dt;
+
             var artigosStr = string.Join("','", todosArtigos);
+
             var queryCompleta = $@"
-                WITH ArtigosData AS (
-                    SELECT 
-                        A.Artigo,
-                        A.UnidadeBase,
-                        A.Familia,
-                        F.Descricao as DescricaoFamilia,
-                        CASE WHEN A.Familia = '011' THEN 1 ELSE 0 END as IsServico
-                    FROM Artigo A
-                    LEFT JOIN Familias F ON A.Familia = F.Familia
-                    WHERE A.Artigo IN ('{artigosStr}')
-                ),
-                RececaoVFA AS (
-                    SELECT DISTINCT L.Artigo
-                    FROM LinhasCompras L
-                    INNER JOIN CabecCompras C ON L.IdCabecCompras = C.ID
-                    INNER JOIN COP_Obras CO ON L.ObraID = CO.ID
-                    WHERE L.Artigo IN ('{artigosStr}')
-                      AND C.TipoDoc IN ('VFA', 'REC')
-                      AND CO.Codigo = '{projeto}'
-                )
-                SELECT 
-                    A.Artigo,
-                    A.UnidadeBase,
-                    ISNULL(A.DescricaoFamilia, A.Familia) as Familia,
-                    A.IsServico,
-                    CASE WHEN R.Artigo IS NOT NULL THEN 1 ELSE 0 END as Rececionado
-                FROM ArtigosData A
-                LEFT JOIN RececaoVFA R ON A.Artigo = R.Artigo";
+WITH ArtigosData AS (
+    SELECT A.Artigo, A.UnidadeBase, A.Familia,
+           F.Descricao as DescricaoFamilia,
+           CASE WHEN A.Familia = '011' THEN 1 ELSE 0 END as IsServico
+    FROM Artigo A
+    LEFT JOIN Familias F ON A.Familia = F.Familia
+    WHERE A.Artigo IN ('{artigosStr}')
+),
+RececaoVFA AS (
+    SELECT DISTINCT L.Artigo
+    FROM LinhasCompras L WITH(NOLOCK)
+    INNER JOIN CabecCompras C WITH(NOLOCK) ON L.IdCabecCompras = C.ID
+    INNER JOIN COP_Obras CO WITH(NOLOCK) ON L.ObraID = CO.ID
+    WHERE L.Artigo IN ('{artigosStr}')
+      AND C.TipoDoc IN ('VFA', 'REC')
+      AND CO.Codigo = '{projeto}'
+)
+SELECT 
+    A.Artigo, 
+    A.UnidadeBase,
+    ISNULL(A.DescricaoFamilia, A.Familia) as Familia,
+    A.IsServico,
+    CASE WHEN R.Artigo IS NOT NULL THEN 1 ELSE 0 END as Rececionado
+FROM ArtigosData A
+LEFT JOIN RececaoVFA R ON A.Artigo = R.Artigo";
 
             var resultCompleto = BSO.Consulta(queryCompleta);
 
-            // Criar dicionários para lookup rápido
             var dadosArtigos = new Dictionary<string, (string Unidade, string Familia, bool IsServico, bool Rececionado)>();
+
             var numResultados = resultCompleto.NumLinhas();
-            resultCompleto.Inicio();
-
-            for (int i = 0; i < numResultados; i++)
+            if (numResultados > 0)
             {
-                var artigo = resultCompleto.DaValor<string>("Artigo");
-                dadosArtigos[artigo] = (
-                    resultCompleto.DaValor<string>("UnidadeBase") ?? "UN",
-                    resultCompleto.DaValor<string>("Familia") ?? "",
-                    resultCompleto.DaValor<int>("IsServico") == 1,
-                    resultCompleto.DaValor<int>("Rececionado") == 1
-                );
-                resultCompleto.Seguinte();
+                resultCompleto.Inicio();
+
+                for (int i = 0; i < numResultados; i++)
+                {
+                    var artigo = resultCompleto.DaValor<string>("Artigo");
+                    dadosArtigos[artigo] = (
+                        resultCompleto.DaValor<string>("UnidadeBase") ?? "UN",
+                        resultCompleto.DaValor<string>("Familia") ?? "",
+                        resultCompleto.DaValor<int>("IsServico") == 1,
+                        resultCompleto.DaValor<int>("Rececionado") == 1
+                    );
+                    resultCompleto.Seguinte();
+                }
             }
 
-            // Criar set de artigos existentes no documento para verificação rápida
-            var artigosExistentesNoDoc = new HashSet<string>();
-            for (int y = 1; y <= this.DocumentoStock.Linhas.NumItens; y++)
-            {
-                artigosExistentesNoDoc.Add(this.DocumentoStock.Linhas.GetEdita(y).Artigo);
-            }
-
-            // Processar dados dos artigos elétricos
             artigosEletricos.Inicio();
             for (int i = 0; i < num; i++)
             {
@@ -1279,24 +1370,24 @@ namespace ADSucoremaExtensibilidade
                 var precoUnitario = Math.Abs(Convert.ToDouble(artigosEletricos.DaValor<string>("PrecUnit")));
                 var precoLiquido = Math.Abs(Convert.ToDouble(artigosEletricos.DaValor<string>("PrecoLiquido")));
 
-                // Usar dados do lookup
-                var dadosArtigo = dadosArtigos.ContainsKey(artigo)
-                    ? dadosArtigos[artigo]
-                    : ("UN", "", false, false);
+                (string Unidade, string Familia, bool IsServico, bool Rececionado) dadosArtigo =
+    dadosArtigos.ContainsKey(artigo)
+        ? dadosArtigos[artigo]
+        : (Unidade: "UN", Familia: "", IsServico: false, Rececionado: false);
 
                 dt.Rows.Add(
-                    false, // Checkbox sempre false inicialmente
+                    false,
                     ordemFabrico ?? "",
                     artigo,
-                    dadosArtigo.Item2, // Familia
-                    dadosArtigo.Item1, // Unidade
+                    dadosArtigo.Familia,
+                    dadosArtigo.Unidade,
                     quantidade,
                     precoLiquido,
                     precoUnitario,
                     descricao,
                     projeto,
-                    dadosArtigo.Item4, // Rececionado
-                    dadosArtigo.Item3  // IsServico
+                    dadosArtigo.Rececionado,
+                    false
                 );
 
                 artigosEletricos.Seguinte();
@@ -1304,6 +1395,7 @@ namespace ADSucoremaExtensibilidade
 
             return dt;
         }
+
 
         private System.Data.DataTable CriarDataTableVazio()
         {
@@ -1363,7 +1455,7 @@ namespace ADSucoremaExtensibilidade
             _cacheArtigosSOF[artigo] = false;
             return false;
         }
-
+        private Dictionary<string, bool> _cacheDadoSaida = new Dictionary<string, bool>();
         // Método otimizado para verificar múltiplos artigos de uma vez
         private Dictionary<string, bool> VerificarArtigosExistemEmSOFBatch(List<string> artigos)
         {
@@ -1553,6 +1645,7 @@ namespace ADSucoremaExtensibilidade
             _cacheArtigosSOF.Clear();
             _cacheRececaoVFS.Clear();
             _cacheRececaoVFA.Clear();
+            _linhasComDadoSaida.Clear();
 
             CarregarListaSelecionada();
         }

@@ -145,6 +145,7 @@
     </Reference>
     <Reference Include="IVndBS100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\IVndBS100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Microsoft.Office.Interop.Excel, Version=15.0.0.0, Culture=neutral, PublicKeyToken=71e9bce111e9429c, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Office.Interop.Excel.15.0.4795.1001\lib\net20\Microsoft.Office.Interop.Excel.dll</HintPath>
@@ -202,6 +203,7 @@
     </Reference>
     <Reference Include="Primavera.Extensibility.Sales">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\Primavera.Extensibility.Sales.dll</HintPath>
+      <Private>False</Private>
     </Reference>
     <Reference Include="Primavera.Platform.Collections">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\Primavera.Platform.Collections.dll</HintPath>
@@ -236,6 +238,7 @@
     <Reference Include="System.Xml" />
     <Reference Include="VndBE100">
       <HintPath>..\..\..\..\..\..\Program Files\PRIMAVERA\SG100\Apl\VndBE100.dll</HintPath>
+      <Private>False</Private>
     </Reference>
   </ItemGroup>
   <ItemGroup>
@@ -276,6 +279,7 @@
     <Compile Include="FrmProject.Designer.cs">
       <DependentUpon>FrmProject.cs</DependentUpon>
     </Compile>
+    <Compile Include="EditorVendas.cs" />
     <Compile Include="Priform.cs">
       <SubType>Form</SubType>
     </Compile>
